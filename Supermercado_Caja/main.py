@@ -2,6 +2,9 @@ from utils import limpiar_pantalla, pausar
 import productos as prod
 
 def menu_principal():
+    # Cargamos los productos al iniciar el programa
+    productos = prod.cargar_productos()
+    
     while True:
         limpiar_pantalla()
         print("="*50)
@@ -16,7 +19,7 @@ def menu_principal():
         opcion = input("Seleccione una opción: ")
         
         if opcion == "1":
-            menu_productos()
+            productos = menu_productos(productos)   # Actualizamos los productos
         elif opcion == "2":
             print("Módulo de ventas (en desarrollo...)")
             pausar()
@@ -30,8 +33,11 @@ def menu_principal():
             print("Opción inválida.")
             pausar()
 
-def menu_productos():
+def menu_productos(productos):
     while True:
+        # Recargamos los productos cada vez que entramos al menú
+        productos = prod.cargar_productos()
+        
         limpiar_pantalla()
         print("--- GESTIÓN DE PRODUCTOS ---")
         print("1. Agregar Producto")
@@ -39,15 +45,19 @@ def menu_productos():
         print("3. Volver al menú principal")
         
         op = input("Opción: ")
+        
         if op == "1":
-            # Aquí iremos agregando la lógica
-            print("Función de agregar producto en desarrollo...")
+            prod.agregar_producto(productos)
         elif op == "2":
-            print("Listado de productos en desarrollo...")
+            prod.listar_productos(productos)
         elif op == "3":
             break
         else:
-            print("Opción inválida")
+            print("Opción inválida.")
+        
+        pausar()
+    
+    return productos  # Devolvemos el diccionario actualizado
 
 if __name__ == "__main__":
     menu_principal()
