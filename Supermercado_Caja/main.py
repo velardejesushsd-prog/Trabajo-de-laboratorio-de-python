@@ -1,8 +1,9 @@
 from utils import limpiar_pantalla, pausar
 import productos as prod
+import ventas as vent   
 
 def menu_principal():
-    # Cargamos los productos al iniciar el programa
+    
     productos = prod.cargar_productos()
     
     while True:
@@ -19,10 +20,9 @@ def menu_principal():
         opcion = input("Seleccione una opción: ")
         
         if opcion == "1":
-            productos = menu_productos(productos)   # Actualizamos los productos
+            productos = menu_productos(productos)
         elif opcion == "2":
-            print("Módulo de ventas (en desarrollo...)")
-            pausar()
+            vent.realizar_venta(productos)          
         elif opcion == "3":
             print("Estadísticas (en desarrollo...)")
             pausar()
@@ -35,7 +35,7 @@ def menu_principal():
 
 def menu_productos(productos):
     while True:
-        # Recargamos los productos cada vez que entramos al menú
+      
         productos = prod.cargar_productos()
         
         limpiar_pantalla()
@@ -57,7 +57,7 @@ def menu_productos(productos):
         
         pausar()
     
-    return productos  # Devolvemos el diccionario actualizado
+    return productos
 
 if __name__ == "__main__":
     menu_principal()
