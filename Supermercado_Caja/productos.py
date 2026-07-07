@@ -29,9 +29,10 @@ def guardar_productos(productos):
         with open(ruta, "w", encoding="utf-8") as f:
             for cod, data in productos.items():
                 f.write(f"{cod};{data['nombre']};{data['precio']};{data['stock']}\n")
-        print(f"Guardado correctamente en: {ruta}")   # ← Mensaje de debug
+        print(f"Guardado correctamente en: {ruta}")
     except Exception as e:
         print(f"Error al guardar: {e}")
+
 
 def agregar_producto(productos):
     cod = input("Ingrese código del producto (ej: P001): ").strip().upper()
@@ -40,6 +41,10 @@ def agregar_producto(productos):
         return
     
     nombre = input("Ingrese nombre del producto: ").strip()
+    if not nombre or nombre.isdigit():   # ← Validación mejorada
+        print("Error: El nombre no puede estar vacío ni ser solo números.")
+        return
+    
     try:
         precio = float(input("Ingrese precio: "))
         stock = int(input("Ingrese stock inicial: "))
@@ -65,3 +70,53 @@ def listar_productos(productos):
     print("-" * 60)
     for cod, data in productos.items():
         print(f"{cod:<8} {data['nombre']:<25} ${data['precio']:<9.2f} {data['stock']:<8}")
+
+
+def modificar_producto(productos):
+    cod = input("Ingrese código del producto a modificar: ").strip().upper()
+    if cod not in productos:
+        print("Producto no encontrado.")
+        return
+    
+    p = productos[cod]
+    print(f"Producto actual: {p['nombre']} - ${p['precio']} - Stock: {p['stock']}")
+    
+    nombre = input("Nuevo nombre (Enter para mantener): ").strip()
+    if nombre:
+        p['nombre'] = nombre
+    
+    try:
+        precio_str = input("Nuevo precio (Enter para mantener): ").strip()
+        if precio_str:
+            precio = float(precio_str)
+            if precio > 0:
+                p['precio'] = precio
+    except ValueError:
+        print("Precio inválido, se mantiene el anterior.")
+    
+    try:
+        stock_str = input("Nuevo stock (Enter para mantener): ").strip()
+        if stock_str:
+            stock = int(stock_str)
+            if stock >= 0:
+                p['stock'] = stock
+    except ValueError:
+        print("Stock inválido, se mantiene el anterior.")
+    
+    guardar_productos(productos)
+    print("Producto modificado correctamente.")
+
+
+def eliminar_producto(productos):
+    cod = input("Ingrese código del producto a eliminar: ").strip().upper()
+    if cod not in productos:
+        print("Producto no encontrado.")
+        return
+    
+    confirmar = input(f"¿Eliminar {productos[cod]['nombre']}? (S/N): ").strip().upper()
+    if confirmar == "S":
+        del productos[cod]
+        guardar_productos(productos)
+        print("Producto eliminado correctamente.")
+    else:
+        print("Eliminación cancelada.")

@@ -1,9 +1,10 @@
 from utils import limpiar_pantalla, pausar
 import productos as prod
-import ventas as vent   
+import ventas as vent
+import estadisticas as stats
 
 def menu_principal():
-    
+    # Cargamos los productos al iniciar el programa
     productos = prod.cargar_productos()
     
     while True:
@@ -22,10 +23,9 @@ def menu_principal():
         if opcion == "1":
             productos = menu_productos(productos)
         elif opcion == "2":
-            vent.realizar_venta(productos)          
+            vent.realizar_venta(productos)
         elif opcion == "3":
-            print("Estadísticas (en desarrollo...)")
-            pausar()
+            stats.mostrar_estadisticas(productos)
         elif opcion == "4":
             print("¡Gracias por usar el sistema!")
             break
@@ -35,14 +35,15 @@ def menu_principal():
 
 def menu_productos(productos):
     while True:
-      
         productos = prod.cargar_productos()
         
         limpiar_pantalla()
         print("--- GESTIÓN DE PRODUCTOS ---")
         print("1. Agregar Producto")
         print("2. Listar Productos")
-        print("3. Volver al menú principal")
+        print("3. Modificar Producto")
+        print("4. Eliminar Producto")
+        print("5. Volver al menú principal")
         
         op = input("Opción: ")
         
@@ -51,6 +52,10 @@ def menu_productos(productos):
         elif op == "2":
             prod.listar_productos(productos)
         elif op == "3":
+            prod.modificar_producto(productos)
+        elif op == "4":
+            prod.eliminar_producto(productos)
+        elif op == "5":
             break
         else:
             print("Opción inválida.")
